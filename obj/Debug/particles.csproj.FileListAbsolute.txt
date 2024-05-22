@@ -1,0 +1,10 @@
+D:\study\C#\lab 6\particles\bin\Debug\particles.exe.config
+D:\study\C#\lab 6\particles\bin\Debug\particles.exe
+D:\study\C#\lab 6\particles\bin\Debug\particles.pdb
+D:\study\C#\lab 6\particles\obj\Debug\particles.csproj.AssemblyReference.cache
+D:\study\C#\lab 6\particles\obj\Debug\particles.Form1.resources
+D:\study\C#\lab 6\particles\obj\Debug\particles.Properties.Resources.resources
+D:\study\C#\lab 6\particles\obj\Debug\particles.csproj.GenerateResource.cache
+D:\study\C#\lab 6\particles\obj\Debug\particles.csproj.CoreCompileInputs.cache
+D:\study\C#\lab 6\particles\obj\Debug\particles.exe
+D:\study\C#\lab 6\particles\obj\Debug\particles.pdb
