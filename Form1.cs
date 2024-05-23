@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,23 +18,21 @@ namespace particles
         List<Emitter> emitters = new List<Emitter>();
         Emitter emitter;
 
-        private int MousePositionX = 0;
-        private int MousePositionY = 0;
-
         
         private CollisionCircle point1;
+        private Teleport point2;
 
         public Form1()
         {
             InitializeComponent();
             picDisplay.Image = new Bitmap(picDisplay.Width, picDisplay.Height);
 
-            this.emitter = new Emitter // создаю эмиттер и привязываю его к полю emitter
+            this.emitter = new Emitter 
             {
                 Direction = 0,
                 Spreading = 1,
-                SpeedMin = 5,
-                SpeedMax = 10,
+                SpeedMin = 1,
+                SpeedMax = 2,
                 ColorFrom = Color.Gold,
                 ColorTo = Color.FromArgb(0, Color.Red),
                 ParticlesPerTick = 10,
@@ -43,23 +42,25 @@ namespace particles
 
             emitters.Add(this.emitter);
             point1 = new CollisionCircle { X = picDisplay.Width / 2, Y = picDisplay.Height / 4 * 3 };
+            point2 = new Teleport { X = picDisplay.Width / 2, X2 = picDisplay.Width / 4 * 3, Y = picDisplay.Height / 4 * 3, Y2 = picDisplay.Height / 3 };
             emitter.impactPoints.Add(point1);
-     
+            emitter.impactPoints.Add(point2);
 
 
-            lblDirection.Text = $"{tbDirection.Value}°";
+
+            //lblDirection.Text = $"{tbDirection.Value}°";
         }
 
 
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            emitter.UpdateState(); // тут теперь обновляем эмиттер
+            emitter.UpdateState(); 
 
             using (var g = Graphics.FromImage(picDisplay.Image))
             {
-                g.Clear(Color.Black);
-                emitter.Render(g); // а тут теперь рендерим через эмиттер
+                g.Clear(Color.Gray);
+                emitter.Render(g);
             }
 
             picDisplay.Invalidate();
@@ -76,7 +77,7 @@ namespace particles
         private void tbDirection_Scroll(object sender, EventArgs e)
         {
             emitter.Direction = tbDirection.Value;
-            lblDirection.Text = $"{tbDirection.Value}°";
+            //lblDirection.Text = $"{tbDirection.Value}°";
         }
 
         private void tbGraviton_Scroll(object sender, EventArgs e)
