@@ -10,7 +10,7 @@ namespace particles
     public class Emitter
     {
         public int X; // координата X центра эмиттера, будем ее использовать вместо MousePositionX
-        public int Y; // соответствующая координата Y 
+        public int Y; 
         public int Direction = 0; // вектор направления в градусах куда сыпет эмиттер
         public int Spreading = 360; // разброс частиц относительно Direction
         public int SpeedMin = 1; // начальная минимальная скорость движения частицы
@@ -24,13 +24,9 @@ namespace particles
         public Color ColorFrom = Color.White; // начальный цвет частицы
         public Color ColorTo = Color.FromArgb(0, Color.Black); // конечный цвет частиц
 
-        List<Particle> particles = new List<Particle>();
+        public List<Particle> particles = new List<Particle>();
         public List<IImpactPoint> impactPoints = new List<IImpactPoint>();
-        public int MousePositionX;
-        public int MousePositionY;
-
-        public int ParticlesCount = 500;
-
+    
         public float GravitationX = 0;
         public float GravitationY = 1;
 
@@ -39,21 +35,16 @@ namespace particles
             int particlesToCreate = ParticlesPerTick;
             foreach (var particle in particles)
             {
-                if (particle.Life <= 0) // если частицы умерла
+                if (particle.Life <= 0)
                 {
-                    /* 
-                     * то проверяем надо ли создать частицу
-                     */
                     if (particlesToCreate > 0)
                     {
-                        /* у нас как сброс частицы равносилен созданию частицы */
-                        particlesToCreate -= 1; // поэтому уменьшаем счётчик созданных частиц на 1
+                        particlesToCreate -= 1;
                         ResetParticle(particle);
                     }
                 }
                 else
                 {
-
                     particle.X += particle.SpeedX;
                     particle.Y += particle.SpeedY;
 
@@ -79,24 +70,14 @@ namespace particles
 
         public void Render(Graphics g)
         {
-            // не трогаем
             foreach (var particle in particles)
             {
                 particle.Draw(g);
             }
 
-            foreach (var point in impactPoints) // тут теперь  impactPoints
+            foreach (var point in impactPoints) 
             {
-                /* это больше не надо
-                g.FillEllipse(
-                    new SolidBrush(Color.Red),
-                    point.X - 5,
-                    point.Y - 5,
-                    10,
-                    10
-                );
-                */
-                point.Render(g); // это добавили
+                point.Render(g);
             }
         }
 
