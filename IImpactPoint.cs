@@ -13,7 +13,7 @@ namespace particles
         public float Y;
 
 
-        public abstract bool ImpactParticle(Particle particle);
+        public abstract void ImpactParticle(Particle particle);
 
         public virtual void Render(Graphics g)
         {

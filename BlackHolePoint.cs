@@ -15,7 +15,7 @@ namespace particles
         public float internalPower;
         public float weight = 1;
 
-        public override bool ImpactParticle(Particle particle)
+        public override void ImpactParticle(Particle particle)
         {
             float gX = X - particle.X;
             float gY = Y - particle.Y;
@@ -26,7 +26,6 @@ namespace particles
             if (r + particle.Radius < internalPower / 2)
             {
                 weight += 0.00002f;
-                return false;
             } else if (r + particle.Radius < Power / 2) 
             {
                 float r2 = (float)Math.Max(Power, gX * gX + gY * gY);
@@ -34,7 +33,6 @@ namespace particles
                 particle.SpeedY += gY * Power / r2;
             }
 
-            return true;
         }
 
         public override void Render(Graphics g)

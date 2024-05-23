@@ -9,14 +9,17 @@ namespace particles
 {
     public class Particle
     {
-        public int Radius; 
+        public int Radius;
         public float X; 
-        public float Y;
-        public float SpeedX; // скорость перемещения по оси X
-        public float SpeedY;
-        public float Life; // запас здоровья частицы
+        public float Y; 
+        public float SpeedX; 
+        public float SpeedY; 
+        public float Life;
 
         public static Random rand = new Random();
+
+        public Color FromColor;
+        public Color ToColor;
 
         public Particle()
         {
@@ -30,24 +33,6 @@ namespace particles
             Life = 20 + rand.Next(100);
         }
 
-        public virtual void Draw(Graphics g)
-        {
-            float k = Math.Min(1f, Life / 100);
-            int alpha = (int)(k * 255);
-
-            var color = Color.FromArgb(alpha, Color.Black);
-            var b = new SolidBrush(color);
-
-            g.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);
-            b.Dispose();
-        }
-    }
-
-    public class ParticleColorful : Particle
-    {
-        public Color FromColor;
-        public Color ToColor;
-
         public static Color MixColor(Color color1, Color color2, float k)
         {
             return Color.FromArgb(
@@ -58,15 +43,12 @@ namespace particles
             );
         }
 
-        public override void Draw(Graphics g)
+        public virtual void Draw(Graphics g)
         {
             float k = Math.Min(1f, Life / 100);
-
             var color = MixColor(ToColor, FromColor, k);
             var b = new SolidBrush(color);
-
             g.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);
-
             b.Dispose();
         }
     }

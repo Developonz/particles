@@ -21,7 +21,7 @@ namespace particles
         private int MousePositionY = 0;
 
         
-  
+        private CollisionCircle point1;
 
         public Form1()
         {
@@ -31,18 +31,19 @@ namespace particles
             this.emitter = new Emitter // создаю эмиттер и привязываю его к полю emitter
             {
                 Direction = 0,
-                Spreading = 150,
-                SpeedMin = 8,
-                SpeedMax = 19,
+                Spreading = 1,
+                SpeedMin = 5,
+                SpeedMax = 10,
                 ColorFrom = Color.Gold,
                 ColorTo = Color.FromArgb(0, Color.Red),
                 ParticlesPerTick = 10,
-                X = picDisplay.Width / 2,
-                Y = picDisplay.Height / 2,
+                X = picDisplay.Width / 4,
+                Y = picDisplay.Height / 4,
             };
 
             emitters.Add(this.emitter);
-
+            point1 = new CollisionCircle { X = picDisplay.Width / 2, Y = picDisplay.Height / 4 * 3 };
+            emitter.impactPoints.Add(point1);
      
 
 
@@ -68,7 +69,8 @@ namespace particles
 
         private void picDisplay_MouseMove(object sender, MouseEventArgs e)
         {
-            
+            point1.X = e.X;
+            point1.Y = e.Y;
         }
 
         private void tbDirection_Scroll(object sender, EventArgs e)

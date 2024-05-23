@@ -9,26 +9,28 @@ namespace particles
 {
     public class Emitter
     {
-        public int X; // координата X центра эмиттера, будем ее использовать вместо MousePositionX
+        public int X;
         public int Y; 
-        public int Direction = 0; // вектор направления в градусах куда сыпет эмиттер
-        public int Spreading = 360; // разброс частиц относительно Direction
-        public int SpeedMin = 1; // начальная минимальная скорость движения частицы
-        public int SpeedMax = 10; // начальная максимальная скорость движения частицы
-        public int RadiusMin = 2; // минимальный радиус частицы
-        public int RadiusMax = 10; // максимальный радиус частицы
-        public int LifeMin = 20; // минимальное время жизни частицы
-        public int LifeMax = 100; // максимальное время жизни частицы
-        public int ParticlesPerTick = 1;
+        public int Direction = 0; 
+        public int Spreading = 360; 
+        public int SpeedMin = 1; 
+        public int SpeedMax = 10; 
+        public int RadiusMin = 2;
+        public int RadiusMax = 10; 
+        public int LifeMin = 20; 
+        public int LifeMax = 100;
+        public int ParticlesPerTick = 10;
 
-        public Color ColorFrom = Color.White; // начальный цвет частицы
-        public Color ColorTo = Color.FromArgb(0, Color.Black); // конечный цвет частиц
+        public Color ColorFrom = Color.White;
+        public Color ColorTo = Color.FromArgb(0, Color.Black);
 
         public List<Particle> particles = new List<Particle>();
         public List<IImpactPoint> impactPoints = new List<IImpactPoint>();
     
         public float GravitationX = 0;
         public float GravitationY = 1;
+
+ 
 
         public void UpdateState()
         {
@@ -84,7 +86,7 @@ namespace particles
         public virtual void ResetParticle(Particle particle)
         {
             particle.Life = Particle.rand.Next(LifeMin, LifeMax);
-
+            particle.FromColor = ColorFrom;
             particle.X = X;
             particle.Y = Y;
 
@@ -102,7 +104,7 @@ namespace particles
 
         public virtual Particle CreateParticle()
         {
-            var particle = new ParticleColorful();
+            var particle = new Particle();
             particle.FromColor = ColorFrom;
             particle.ToColor = ColorTo;
 

@@ -11,7 +11,7 @@ namespace particles
         public float Power = 100;
 
 
-        public override bool ImpactParticle(Particle particle)
+        public override void ImpactParticle(Particle particle)
         {
             float gX = X - particle.X;
             float gY = Y - particle.Y;
@@ -19,7 +19,6 @@ namespace particles
 
             particle.SpeedX -= gX * Power / r2; 
             particle.SpeedY -= gY * Power / r2;
-            return true;
         }
     }
 }
