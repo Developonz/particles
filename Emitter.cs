@@ -58,6 +58,13 @@ namespace particles
 
                     particle.SpeedX += GravitationX;
                     particle.SpeedY += GravitationY;
+
+                    if (!particle.access)
+                    {
+                        particlesToCreate -= 1;
+                        ResetParticle(particle);
+                        particle.access = true;
+                    }
                 }
             }
 

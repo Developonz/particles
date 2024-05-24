@@ -15,6 +15,7 @@ namespace particles
         public float SpeedX; 
         public float SpeedY; 
         public float Life;
+        public bool access = true;
 
         public static Random rand = new Random();
 

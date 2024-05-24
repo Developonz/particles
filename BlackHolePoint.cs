@@ -9,23 +9,37 @@ namespace particles
 {
     public class BlackHolePoint : IImpactPoint
     {
-        private const float EXTER_POWER = 200;
-        private const float INTER_POWER = 75;
+        private const float EXTER_POWER = 100;
+        private const float INTER_POWER = 40;
         public float Power;
         public float internalPower;
         public float weight = 1;
+        public float speed = 0.02f;
+        public float angle = 0;
+        private float maxPower = 150;
+
+        public BlackHolePoint() { }
+
+        public BlackHolePoint(float maxPower) 
+        {
+            this.maxPower = maxPower;
+        }
 
         public override void ImpactParticle(Particle particle)
         {
             float gX = X - particle.X;
             float gY = Y - particle.Y;
             double r = Math.Sqrt(gX * gX + gY * gY);
-            Power = EXTER_POWER * weight;
-            internalPower = INTER_POWER * weight;
+            if (Power <= maxPower)
+            {
+                Power = EXTER_POWER * weight;
+                internalPower = INTER_POWER * weight;
+            }            
 
             if (r + particle.Radius < internalPower / 2)
             {
-                weight += 0.00002f;
+                weight += 0.0005f;
+                particle.access = false;
             } else if (r + particle.Radius < Power / 2) 
             {
                 float r2 = (float)Math.Max(Power, gX * gX + gY * gY);
@@ -37,16 +51,16 @@ namespace particles
 
         public override void Render(Graphics g)
         {
-            g.DrawEllipse(
-                new Pen(Color.Red),
+            g.FillEllipse(
+                new SolidBrush(Color.Black),
                 X - internalPower / 2,
                 Y - internalPower / 2,
                 internalPower,
                 internalPower
-            );
+            ); ;
 
             g.DrawEllipse(
-                new Pen(Color.Red),
+                new Pen(Color.Blue),
                 X - Power / 2,
                 Y - Power / 2,
                 Power,

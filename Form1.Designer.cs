@@ -37,19 +37,19 @@
             this.tbDirection = new System.Windows.Forms.TrackBar();
             this.tbSpreading = new System.Windows.Forms.TrackBar();
             this.rbTeleport = new System.Windows.Forms.RadioButton();
-            this.rbBlackEater = new System.Windows.Forms.RadioButton();
             this.rbEmitter = new System.Windows.Forms.RadioButton();
             this.rbDeMagnite = new System.Windows.Forms.RadioButton();
             this.rbMagnite = new System.Windows.Forms.RadioButton();
-            this.tbPowerGravitone = new System.Windows.Forms.TrackBar();
-            this.tbPowerAntiGraviton = new System.Windows.Forms.TrackBar();
+            this.tbPowerMagnite = new System.Windows.Forms.TrackBar();
+            this.tbPowerDeMagnite = new System.Windows.Forms.TrackBar();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rbWall = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbDirection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbSpreading)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbPowerGravitone)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbPowerAntiGraviton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbPowerMagnite)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbPowerDeMagnite)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,6 +111,7 @@
             this.tbDirection.Name = "tbDirection";
             this.tbDirection.Size = new System.Drawing.Size(299, 56);
             this.tbDirection.TabIndex = 1;
+            this.tbDirection.Scroll += new System.EventHandler(this.tbDirection_Scroll);
             // 
             // tbSpreading
             // 
@@ -120,11 +121,12 @@
             this.tbSpreading.Name = "tbSpreading";
             this.tbSpreading.Size = new System.Drawing.Size(299, 56);
             this.tbSpreading.TabIndex = 3;
+            this.tbSpreading.Scroll += new System.EventHandler(this.tbSpreading_Scroll);
             // 
             // rbTeleport
             // 
             this.rbTeleport.AutoSize = true;
-            this.rbTeleport.Location = new System.Drawing.Point(835, 36);
+            this.rbTeleport.Location = new System.Drawing.Point(425, 99);
             this.rbTeleport.Margin = new System.Windows.Forms.Padding(4);
             this.rbTeleport.Name = "rbTeleport";
             this.rbTeleport.Size = new System.Drawing.Size(92, 20);
@@ -133,34 +135,22 @@
             this.rbTeleport.Text = "Телепорт";
             this.rbTeleport.UseVisualStyleBackColor = true;
             // 
-            // rbBlackEater
-            // 
-            this.rbBlackEater.AutoSize = true;
-            this.rbBlackEater.Location = new System.Drawing.Point(608, 36);
-            this.rbBlackEater.Margin = new System.Windows.Forms.Padding(4);
-            this.rbBlackEater.Name = "rbBlackEater";
-            this.rbBlackEater.Size = new System.Drawing.Size(202, 20);
-            this.rbBlackEater.TabIndex = 12;
-            this.rbBlackEater.TabStop = true;
-            this.rbBlackEater.Text = "Черный пожиратель(Дыра)";
-            this.rbBlackEater.UseVisualStyleBackColor = true;
-            // 
             // rbEmitter
             // 
             this.rbEmitter.AutoSize = true;
             this.rbEmitter.Location = new System.Drawing.Point(425, 36);
             this.rbEmitter.Margin = new System.Windows.Forms.Padding(4);
             this.rbEmitter.Name = "rbEmitter";
-            this.rbEmitter.Size = new System.Drawing.Size(167, 20);
+            this.rbEmitter.Size = new System.Drawing.Size(69, 20);
             this.rbEmitter.TabIndex = 11;
             this.rbEmitter.TabStop = true;
-            this.rbEmitter.Text = "Точка спавна частиц";
+            this.rbEmitter.Text = "Спавн";
             this.rbEmitter.UseVisualStyleBackColor = true;
             // 
             // rbDeMagnite
             // 
             this.rbDeMagnite.AutoSize = true;
-            this.rbDeMagnite.Location = new System.Drawing.Point(947, 135);
+            this.rbDeMagnite.Location = new System.Drawing.Point(979, 116);
             this.rbDeMagnite.Margin = new System.Windows.Forms.Padding(4);
             this.rbDeMagnite.Name = "rbDeMagnite";
             this.rbDeMagnite.Size = new System.Drawing.Size(122, 20);
@@ -172,7 +162,7 @@
             // rbMagnite
             // 
             this.rbMagnite.AutoSize = true;
-            this.rbMagnite.Location = new System.Drawing.Point(947, 72);
+            this.rbMagnite.Location = new System.Drawing.Point(979, 47);
             this.rbMagnite.Margin = new System.Windows.Forms.Padding(4);
             this.rbMagnite.Name = "rbMagnite";
             this.rbMagnite.Size = new System.Drawing.Size(90, 20);
@@ -181,33 +171,35 @@
             this.rbMagnite.Text = "Гравитон";
             this.rbMagnite.UseVisualStyleBackColor = true;
             // 
-            // tbPowerGravitone
+            // tbPowerMagnite
             // 
-            this.tbPowerGravitone.Location = new System.Drawing.Point(8, 23);
-            this.tbPowerGravitone.Margin = new System.Windows.Forms.Padding(4);
-            this.tbPowerGravitone.Maximum = 200;
-            this.tbPowerGravitone.Minimum = 30;
-            this.tbPowerGravitone.Name = "tbPowerGravitone";
-            this.tbPowerGravitone.Size = new System.Drawing.Size(299, 56);
-            this.tbPowerGravitone.TabIndex = 1;
-            this.tbPowerGravitone.Value = 30;
+            this.tbPowerMagnite.Location = new System.Drawing.Point(8, 23);
+            this.tbPowerMagnite.Margin = new System.Windows.Forms.Padding(4);
+            this.tbPowerMagnite.Maximum = 200;
+            this.tbPowerMagnite.Minimum = 30;
+            this.tbPowerMagnite.Name = "tbPowerMagnite";
+            this.tbPowerMagnite.Size = new System.Drawing.Size(299, 56);
+            this.tbPowerMagnite.TabIndex = 1;
+            this.tbPowerMagnite.Value = 30;
+            this.tbPowerMagnite.Scroll += new System.EventHandler(this.tbPowerGravitone_Scroll);
             // 
-            // tbPowerAntiGraviton
+            // tbPowerDeMagnite
             // 
-            this.tbPowerAntiGraviton.Location = new System.Drawing.Point(8, 86);
-            this.tbPowerAntiGraviton.Margin = new System.Windows.Forms.Padding(4);
-            this.tbPowerAntiGraviton.Maximum = 200;
-            this.tbPowerAntiGraviton.Minimum = 30;
-            this.tbPowerAntiGraviton.Name = "tbPowerAntiGraviton";
-            this.tbPowerAntiGraviton.Size = new System.Drawing.Size(299, 56);
-            this.tbPowerAntiGraviton.TabIndex = 3;
-            this.tbPowerAntiGraviton.Value = 30;
+            this.tbPowerDeMagnite.Location = new System.Drawing.Point(8, 86);
+            this.tbPowerDeMagnite.Margin = new System.Windows.Forms.Padding(4);
+            this.tbPowerDeMagnite.Maximum = 200;
+            this.tbPowerDeMagnite.Minimum = 30;
+            this.tbPowerDeMagnite.Name = "tbPowerDeMagnite";
+            this.tbPowerDeMagnite.Size = new System.Drawing.Size(299, 56);
+            this.tbPowerDeMagnite.TabIndex = 3;
+            this.tbPowerDeMagnite.Value = 30;
+            this.tbPowerDeMagnite.Scroll += new System.EventHandler(this.tbPowerDeMagnite_Scroll);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.tbPowerGravitone);
-            this.groupBox2.Controls.Add(this.tbPowerAntiGraviton);
-            this.groupBox2.Location = new System.Drawing.Point(1099, 36);
+            this.groupBox2.Controls.Add(this.tbPowerMagnite);
+            this.groupBox2.Controls.Add(this.tbPowerDeMagnite);
+            this.groupBox2.Location = new System.Drawing.Point(1120, 13);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
@@ -216,16 +208,28 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Полузнки силы";
             // 
+            // rbWall
+            // 
+            this.rbWall.AutoSize = true;
+            this.rbWall.Location = new System.Drawing.Point(552, 36);
+            this.rbWall.Margin = new System.Windows.Forms.Padding(4);
+            this.rbWall.Name = "rbWall";
+            this.rbWall.Size = new System.Drawing.Size(68, 20);
+            this.rbWall.TabIndex = 17;
+            this.rbWall.TabStop = true;
+            this.rbWall.Text = "Стена";
+            this.rbWall.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1437, 768);
+            this.Controls.Add(this.rbWall);
             this.Controls.Add(this.rbDeMagnite);
             this.Controls.Add(this.rbMagnite);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.rbTeleport);
-            this.Controls.Add(this.rbBlackEater);
             this.Controls.Add(this.rbEmitter);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.picDisplay);
@@ -236,8 +240,8 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbDirection)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbSpreading)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbPowerGravitone)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbPowerAntiGraviton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbPowerMagnite)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbPowerDeMagnite)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -255,13 +259,13 @@
         private System.Windows.Forms.TrackBar tbDirection;
         private System.Windows.Forms.TrackBar tbSpreading;
         private System.Windows.Forms.RadioButton rbTeleport;
-        private System.Windows.Forms.RadioButton rbBlackEater;
         private System.Windows.Forms.RadioButton rbEmitter;
         private System.Windows.Forms.RadioButton rbDeMagnite;
         private System.Windows.Forms.RadioButton rbMagnite;
-        private System.Windows.Forms.TrackBar tbPowerGravitone;
-        private System.Windows.Forms.TrackBar tbPowerAntiGraviton;
+        private System.Windows.Forms.TrackBar tbPowerMagnite;
+        private System.Windows.Forms.TrackBar tbPowerDeMagnite;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton rbWall;
     }
 }
 
