@@ -14,8 +14,9 @@ namespace particles
     public partial class Form1 : Form
     {
         Emitter emitter;
-        GravityPoint point1;
-        AntiGravityPoint point2; 
+        public List<GravityPoint> point1 = new List<GravityPoint>();
+        List<AntiGravityPoint> point2 = new List<AntiGravityPoint>();
+        List<CollisionCircle> point3 = new List<CollisionCircle>();
         BlackHolePoint holo;
         Teleport teleport;
         Random rnd;
@@ -86,36 +87,77 @@ namespace particles
                 {
                     teleport.X = e.X;
                     teleport.Y = e.Y;
-                    emitter.impactPoints.Remove(teleport);
+                    emitter.impactPoints.Remove(teleport);//Зачем?????????????????????????
                     emitter.impactPoints.Add(teleport);
                 }
-                else
+                else if (e.Button == MouseButtons.Right)
                 {
                     teleport.X2 = e.X;
                     teleport.Y2 = e.Y;
                     emitter.impactPoints.Remove(teleport);
                     emitter.impactPoints.Add(teleport);
+                } else
+                {
+                    emitter.impactPoints.Remove(teleport);
                 }
             }
             else if (rbMagnite.Checked)
             {
-                emitter.impactPoints.Remove(point1);
-                point1 = new GravityPoint
+                if (e.Button == MouseButtons.Left) 
+                { 
+                    GravityPoint point = new GravityPoint
+                    {
+                        X = e.X,
+                        Y = e.Y,
+                    };
+                    emitter.impactPoints.Add(point);
+                    point1.Add(point);
+                } else
                 {
-                    X = e.X,
-                    Y = e.Y,
-                };
-                emitter.impactPoints.Add(point1);
+                    foreach (var point in point1) {
+                        emitter.impactPoints.Remove(point);
+                    }
+                }
             }
             else if (rbDeMagnite.Checked)
             {
-                emitter.impactPoints.Remove(point2);
-                point2 = new AntiGravityPoint
+                if (e.Button == MouseButtons.Left)
                 {
-                    X = e.X,
-                    Y = e.Y,
-                };
-                emitter.impactPoints.Add(point2);
+                    AntiGravityPoint point = new AntiGravityPoint
+                    {
+                        X = e.X,
+                        Y = e.Y,
+                    };
+                    emitter.impactPoints.Add(point);
+                    point2.Add(point);
+                } 
+                else
+                {
+                    foreach (var point in point2)
+                    {
+                        emitter.impactPoints.Remove(point);
+                    }
+                }
+            }
+            else if (rbWall.Checked)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    CollisionCircle point = new CollisionCircle
+                    {
+                        X = e.X,
+                        Y = e.Y,
+                    };
+                    emitter.impactPoints.Add(point);
+                    point3.Add(point);
+                }
+                else
+                {
+                    foreach (var point in point3)
+                    {
+                        emitter.impactPoints.Remove(point);
+                    }
+                }
             }
         }
 
@@ -130,12 +172,18 @@ namespace particles
 
         private void tbPowerDeMagnite_Scroll(object sender, EventArgs e)
         {
-            point2.Power = tbPowerDeMagnite.Value;
+            foreach (var point in point2) 
+            {
+                point.Power = tbPowerDeMagnite.Value;
+            }
         }
 
         private void tbPowerGravitone_Scroll(object sender, EventArgs e)
         {
-            point1.Power = tbPowerMagnite.Value;
+            foreach (var point in point1)
+            {
+                point.Power = tbPowerMagnite.Value;
+            }
         }
 
         private void picDisplay_MouseMove(object sender, EventArgs e)

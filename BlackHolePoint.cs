@@ -17,6 +17,7 @@ namespace particles
         public float speed = 0.02f;
         public float angle = 0;
         private float maxPower = 150;
+        private int countFood = 0;
 
         public BlackHolePoint() { }
 
@@ -40,6 +41,7 @@ namespace particles
             {
                 weight += 0.0005f;
                 particle.access = false;
+                ++countFood;
             } else if (r + particle.Radius < Power / 2) 
             {
                 float r2 = (float)Math.Max(Power, gX * gX + gY * gY);
@@ -65,6 +67,32 @@ namespace particles
                 Y - Power / 2,
                 Power,
                 Power
+            );
+
+            var stringFormat = new StringFormat();
+            stringFormat.Alignment = StringAlignment.Center;
+            stringFormat.LineAlignment = StringAlignment.Center;
+
+            var text = $"Я пожиратель\nЯ съел {countFood}";
+            var font = new Font("Verdana", 10);
+
+            var size = g.MeasureString(text, font);
+
+            g.FillRectangle(
+                new SolidBrush(Color.Gray),
+                X - size.Width / 2,
+                Y - size.Height / 2,
+                size.Width,
+                size.Height
+            );
+
+            g.DrawString(
+                text,
+                font,
+                new SolidBrush(Color.White),
+                X,
+                Y,
+                stringFormat
             );
         }
     }
