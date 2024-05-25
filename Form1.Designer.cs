@@ -44,6 +44,7 @@
             this.tbPowerDeMagnite = new System.Windows.Forms.TrackBar();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rbWall = new System.Windows.Forms.RadioButton();
+            this.rbPaintCircle = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbDirection)).BeginInit();
@@ -61,7 +62,7 @@
             this.picDisplay.TabIndex = 0;
             this.picDisplay.TabStop = false;
             this.picDisplay.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picDisplay_MouseClick);
-            this.picDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picDisplay_MouseMove);
+            this.picDisplay.MouseWheel += new System.Windows.Forms.MouseEventHandler(picDisplay_MouseWheel);
             // 
             // timer1
             // 
@@ -221,11 +222,24 @@
             this.rbWall.Text = "Стена";
             this.rbWall.UseVisualStyleBackColor = true;
             // 
+            // rbPaintCircle
+            // 
+            this.rbPaintCircle.AutoSize = true;
+            this.rbPaintCircle.Location = new System.Drawing.Point(552, 99);
+            this.rbPaintCircle.Margin = new System.Windows.Forms.Padding(4);
+            this.rbPaintCircle.Name = "rbPaintCircle";
+            this.rbPaintCircle.Size = new System.Drawing.Size(73, 20);
+            this.rbPaintCircle.TabIndex = 18;
+            this.rbPaintCircle.TabStop = true;
+            this.rbPaintCircle.Text = "краска";
+            this.rbPaintCircle.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1437, 768);
+            this.Controls.Add(this.rbPaintCircle);
             this.Controls.Add(this.rbWall);
             this.Controls.Add(this.rbDeMagnite);
             this.Controls.Add(this.rbMagnite);
@@ -267,6 +281,7 @@
         private System.Windows.Forms.TrackBar tbPowerDeMagnite;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton rbWall;
+        private System.Windows.Forms.RadioButton rbPaintCircle;
     }
 }
 

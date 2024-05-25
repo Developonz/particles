@@ -8,8 +8,6 @@ namespace particles
 {
     public class AntiGravityPoint : IImpactPoint
     {
-        public float Power = 100;
-
 
         public override void ImpactParticle(Particle particle)
         {
@@ -17,8 +15,8 @@ namespace particles
             float gY = Y - particle.Y;
             float r2 = (float)Math.Max(100, gX * gX + gY * gY);
 
-            particle.SpeedX -= gX * Power / r2; 
-            particle.SpeedY -= gY * Power / r2;
+            particle.SpeedX -= gX * D / r2; 
+            particle.SpeedY -= gY * D / r2;
         }
     }
 }

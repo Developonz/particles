@@ -9,7 +9,7 @@ namespace particles
 {
     public class Teleport : IImpactPoint
     {
-        public int D = 100, X2, Y2;
+        public int X2, Y2;
 
         public override void Render(Graphics g)
         {

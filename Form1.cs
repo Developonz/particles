@@ -14,12 +14,14 @@ namespace particles
     public partial class Form1 : Form
     {
         Emitter emitter;
-        public List<GravityPoint> point1 = new List<GravityPoint>();
+        List<GravityPoint> point1 = new List<GravityPoint>();
         List<AntiGravityPoint> point2 = new List<AntiGravityPoint>();
         List<CollisionCircle> point3 = new List<CollisionCircle>();
+        List<PaintCirlce> point4 = new List<PaintCirlce>();
         BlackHolePoint holo;
         Teleport teleport;
         Random rnd;
+        IImpactPoint activePoint;
 
         private float centerX;
         private float centerY;
@@ -51,6 +53,8 @@ namespace particles
 
             emitter.impactPoints.Add(holo);
         }
+
+        
 
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -87,8 +91,9 @@ namespace particles
                 {
                     teleport.X = e.X;
                     teleport.Y = e.Y;
-                    emitter.impactPoints.Remove(teleport);//Зачем?????????????????????????
+                    emitter.impactPoints.Remove(teleport);
                     emitter.impactPoints.Add(teleport);
+                    activePoint = teleport;
                 }
                 else if (e.Button == MouseButtons.Right)
                 {
@@ -96,9 +101,12 @@ namespace particles
                     teleport.Y2 = e.Y;
                     emitter.impactPoints.Remove(teleport);
                     emitter.impactPoints.Add(teleport);
+                    activePoint = teleport;
                 } else
                 {
                     emitter.impactPoints.Remove(teleport);
+                    if (teleport == activePoint)
+                        activePoint = null;
                 }
             }
             else if (rbMagnite.Checked)
@@ -112,11 +120,15 @@ namespace particles
                     };
                     emitter.impactPoints.Add(point);
                     point1.Add(point);
-                } else
+                    activePoint = point;
+                } else if (e.Button == MouseButtons.Middle)
                 {
                     foreach (var point in point1) {
                         emitter.impactPoints.Remove(point);
+                        if (point == activePoint)
+                            activePoint = null;
                     }
+
                 }
             }
             else if (rbDeMagnite.Checked)
@@ -130,12 +142,15 @@ namespace particles
                     };
                     emitter.impactPoints.Add(point);
                     point2.Add(point);
-                } 
-                else
+                    activePoint = point;
+                }  
+                else if (e.Button == MouseButtons.Middle)
                 {
                     foreach (var point in point2)
                     {
                         emitter.impactPoints.Remove(point);
+                        if (point == activePoint)
+                            activePoint = null;
                     }
                 }
             }
@@ -150,14 +165,58 @@ namespace particles
                     };
                     emitter.impactPoints.Add(point);
                     point3.Add(point);
+                    activePoint = point;
                 }
-                else
-                {
+                else if (e.Button == MouseButtons.Middle)
+                { 
                     foreach (var point in point3)
                     {
                         emitter.impactPoints.Remove(point);
+                        if (point == activePoint)
+                            activePoint = null;
                     }
                 }
+            }
+            else if (rbPaintCircle.Checked)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    PaintCirlce point = new PaintCirlce
+                    {
+                        X = e.X,
+                        Y = e.Y,
+                    };
+                    emitter.impactPoints.Add(point);
+                    point4.Add(point);
+                    activePoint = point;
+                }
+                else if (e.Button == MouseButtons.Middle)
+                {
+                    foreach (var point in point4)
+                    {
+                        emitter.impactPoints.Remove(point);
+                        if (point == activePoint)
+                            activePoint = null;
+                    }
+                }
+            } 
+            if (e.Button == MouseButtons.Right && activePoint != null && !(activePoint is Teleport))
+            {
+                emitter.impactPoints.Remove(activePoint);
+                if (activePoint is GravityPoint)
+                {
+                    point1.Remove(activePoint as GravityPoint);
+                } else if (activePoint is AntiGravityPoint)
+                {
+                    point2.Remove(activePoint as AntiGravityPoint);
+                } else if (activePoint is CollisionCircle)
+                {
+                    point3.Remove(activePoint as CollisionCircle);
+                } else if (activePoint is PaintCirlce)
+                {
+                    point4.Remove(activePoint as PaintCirlce);
+                }
+                activePoint = null;
             }
         }
 
@@ -174,7 +233,7 @@ namespace particles
         {
             foreach (var point in point2) 
             {
-                point.Power = tbPowerDeMagnite.Value;
+                point.D = tbPowerDeMagnite.Value;
             }
         }
 
@@ -182,13 +241,34 @@ namespace particles
         {
             foreach (var point in point1)
             {
-                point.Power = tbPowerMagnite.Value;
+                point.D = tbPowerMagnite.Value;
             }
         }
 
-        private void picDisplay_MouseMove(object sender, EventArgs e)
+
+
+        private void picDisplay_MouseWheel(object sender, MouseEventArgs e)
         {
-            
+            if (activePoint != null) { 
+                if (activePoint is PaintCirlce) {
+                    if (e.Delta > 0) {
+                        ((PaintCirlce)activePoint).changeColor(true);
+                    } else {
+                        ((PaintCirlce)activePoint).changeColor(false);
+                    }
+                }
+                if (e.Delta > 0) { 
+                    if (activePoint.D < 200) { 
+                        activePoint.D += 2;
+                    }
+                } else {
+                    if (activePoint.D > 30)
+                    {
+                        activePoint.D -= 2;
+                    }
+                }
+            }
         }
+
     }
 }

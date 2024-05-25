@@ -11,6 +11,7 @@ namespace particles
     {
         public float X; 
         public float Y;
+        public float D = 100;
 
 
         public abstract void ImpactParticle(Particle particle);

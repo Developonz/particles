@@ -9,7 +9,6 @@ namespace particles
 {
     public class CollisionCircle : IImpactPoint
     {
-        public int D = 100;
 
         public override void Render(Graphics g)
         {

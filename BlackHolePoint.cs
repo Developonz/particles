@@ -39,7 +39,8 @@ namespace particles
 
             if (r + particle.Radius < internalPower / 2)
             {
-                weight += 0.0005f;
+                if (Power <= maxPower)
+                    weight += 0.0005f;
                 particle.access = false;
                 ++countFood;
             } else if (r + particle.Radius < Power / 2) 
