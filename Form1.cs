@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,15 +14,11 @@ namespace particles
 {
     public partial class Form1 : Form
     {
-        Emitter emitter;
-        List<GravityPoint> point1 = new List<GravityPoint>();
-        List<AntiGravityPoint> point2 = new List<AntiGravityPoint>();
-        List<CollisionCircle> point3 = new List<CollisionCircle>();
-        List<PaintCirlce> point4 = new List<PaintCirlce>();
-        BlackHolePoint holo;
-        Teleport teleport;
-        Random rnd;
-        IImpactPoint activePoint;
+        private Emitter emitter;
+        private List<IImpactPoint> points = new List<IImpactPoint>();
+        private BlackHolePoint holo;
+        private Teleport teleport;
+        private IImpactPoint activePoint;
 
         private float centerX;
         private float centerY;
@@ -33,7 +30,6 @@ namespace particles
 
             holo = new BlackHolePoint(picDisplay.Height / 5 * 2) {};
             teleport = new Teleport();
-            rnd = new Random();
 
             centerX = picDisplay.Width / 2;
             centerY = picDisplay.Height / 2;
@@ -73,7 +69,6 @@ namespace particles
             holo.X = centerX + holo.internalPower * (float)Math.Cos(holo.angle);
             holo.Y = centerY + holo.internalPower * (float)Math.Sin(holo.angle);
 
-            this.Invalidate();
 
             picDisplay.Invalidate();
         }
@@ -84,139 +79,86 @@ namespace particles
             {
                 emitter.X = e.X;
                 emitter.Y = e.Y;
-            }
-            else if (rbTeleport.Checked)
+            } else if (e.Button == MouseButtons.Left)
             {
-                if (e.Button == MouseButtons.Left)
-                {
+                if (rbTeleport.Checked) {
                     teleport.X = e.X;
                     teleport.Y = e.Y;
                     emitter.impactPoints.Remove(teleport);
                     emitter.impactPoints.Add(teleport);
                     activePoint = teleport;
+                    return;
                 }
-                else if (e.Button == MouseButtons.Right)
-                {
+                IImpactPoint point = null;
+                if (rbMagnite.Checked) {
+                    point = new GravityPoint {
+                        X = e.X,
+                        Y = e.Y,
+                    };
+                } else if (rbDeMagnite.Checked) {
+                    point = new AntiGravityPoint {
+                        X = e.X,
+                        Y = e.Y,
+                    };
+                } else if (rbWall.Checked) {
+                    point = new CollisionCircle {
+                        X = e.X,
+                        Y = e.Y,
+                    };
+                } else if (rbPaintCircle.Checked) {
+                    point = new PaintCirlce {
+                        X = e.X,
+                        Y = e.Y,
+                    };
+                }
+                emitter.impactPoints.Add(point);
+                points.Add(point);
+                activePoint = point;
+            } else if (e.Button == MouseButtons.Right) {
+                if (rbTeleport.Checked) {
                     teleport.X2 = e.X;
                     teleport.Y2 = e.Y;
                     emitter.impactPoints.Remove(teleport);
                     emitter.impactPoints.Add(teleport);
                     activePoint = teleport;
-                } else
-                {
+                    return;
+                }
+                if (activePoint != null) {
+                    emitter.impactPoints.Remove(activePoint);
+                    points.Remove(activePoint);
+                    activePoint = null;
+                }
+            } else if (e.Button == MouseButtons.Middle) { 
+                if (rbTeleport.Checked) {
                     emitter.impactPoints.Remove(teleport);
-                    if (teleport == activePoint)
+                    if (activePoint == teleport)
+                        activePoint = null;
+                    return;
+                }
+                foreach (var point in points) {
+                    if (rbMagnite.Checked) {
+                        if (point is GravityPoint) {
+                            emitter.impactPoints.Remove(point);
+                        }
+                    }
+                    else if (rbDeMagnite.Checked) {
+                        if (point is AntiGravityPoint) {
+                            emitter.impactPoints.Remove(point);
+                        }
+                    }
+                    else if (rbWall.Checked) {
+                        if (point is CollisionCircle) {
+                            emitter.impactPoints.Remove(point);
+                        }
+                    }
+                    else if (rbPaintCircle.Checked) {
+                        if (point is PaintCirlce) {
+                            emitter.impactPoints.Remove(point);
+                        }
+                    }
+                    if (activePoint == point) 
                         activePoint = null;
                 }
-            }
-            else if (rbMagnite.Checked)
-            {
-                if (e.Button == MouseButtons.Left) 
-                { 
-                    GravityPoint point = new GravityPoint
-                    {
-                        X = e.X,
-                        Y = e.Y,
-                    };
-                    emitter.impactPoints.Add(point);
-                    point1.Add(point);
-                    activePoint = point;
-                } else if (e.Button == MouseButtons.Middle)
-                {
-                    foreach (var point in point1) {
-                        emitter.impactPoints.Remove(point);
-                        if (point == activePoint)
-                            activePoint = null;
-                    }
-
-                }
-            }
-            else if (rbDeMagnite.Checked)
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    AntiGravityPoint point = new AntiGravityPoint
-                    {
-                        X = e.X,
-                        Y = e.Y,
-                    };
-                    emitter.impactPoints.Add(point);
-                    point2.Add(point);
-                    activePoint = point;
-                }  
-                else if (e.Button == MouseButtons.Middle)
-                {
-                    foreach (var point in point2)
-                    {
-                        emitter.impactPoints.Remove(point);
-                        if (point == activePoint)
-                            activePoint = null;
-                    }
-                }
-            }
-            else if (rbWall.Checked)
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    CollisionCircle point = new CollisionCircle
-                    {
-                        X = e.X,
-                        Y = e.Y,
-                    };
-                    emitter.impactPoints.Add(point);
-                    point3.Add(point);
-                    activePoint = point;
-                }
-                else if (e.Button == MouseButtons.Middle)
-                { 
-                    foreach (var point in point3)
-                    {
-                        emitter.impactPoints.Remove(point);
-                        if (point == activePoint)
-                            activePoint = null;
-                    }
-                }
-            }
-            else if (rbPaintCircle.Checked)
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    PaintCirlce point = new PaintCirlce
-                    {
-                        X = e.X,
-                        Y = e.Y,
-                    };
-                    emitter.impactPoints.Add(point);
-                    point4.Add(point);
-                    activePoint = point;
-                }
-                else if (e.Button == MouseButtons.Middle)
-                {
-                    foreach (var point in point4)
-                    {
-                        emitter.impactPoints.Remove(point);
-                        if (point == activePoint)
-                            activePoint = null;
-                    }
-                }
-            } 
-            if (e.Button == MouseButtons.Right && activePoint != null && !(activePoint is Teleport))
-            {
-                emitter.impactPoints.Remove(activePoint);
-                if (activePoint is GravityPoint)
-                {
-                    point1.Remove(activePoint as GravityPoint);
-                } else if (activePoint is AntiGravityPoint)
-                {
-                    point2.Remove(activePoint as AntiGravityPoint);
-                } else if (activePoint is CollisionCircle)
-                {
-                    point3.Remove(activePoint as CollisionCircle);
-                } else if (activePoint is PaintCirlce)
-                {
-                    point4.Remove(activePoint as PaintCirlce);
-                }
-                activePoint = null;
             }
         }
 
@@ -231,17 +173,18 @@ namespace particles
 
         private void tbPowerDeMagnite_Scroll(object sender, EventArgs e)
         {
-            foreach (var point in point2) 
+            foreach (var point in points) 
             {
-                point.D = tbPowerDeMagnite.Value;
+                if (point is AntiGravityPoint)
+                    point.D = tbPowerDeMagnite.Value;
             }
         }
 
         private void tbPowerGravitone_Scroll(object sender, EventArgs e)
         {
-            foreach (var point in point1)
-            {
-                point.D = tbPowerMagnite.Value;
+            foreach (var point in points) {
+                if (point is GravityPoint)
+                    point.D = tbPowerMagnite.Value;
             }
         }
 
@@ -256,14 +199,14 @@ namespace particles
                     } else {
                         ((PaintCirlce)activePoint).changeColor(false);
                     }
+                    return;
                 }
                 if (e.Delta > 0) { 
                     if (activePoint.D < 200) { 
                         activePoint.D += 2;
                     }
                 } else {
-                    if (activePoint.D > 30)
-                    {
+                    if (activePoint.D > 30) {
                         activePoint.D -= 2;
                     }
                 }
